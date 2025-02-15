@@ -1,67 +1,44 @@
+package com.example.timetracker;
+
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.Scanner;
+import java.time.Instant;
 
 public class TimeTracker {
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private boolean running;
+    private Instant startTime;
+    private Instant endTime;
 
     public void start() {
-        if (!running) {
-            startTime = LocalDateTime.now();
-            running = true;
-            System.out.println("Timer started at: " + startTime);
-        } else {
-            System.out.println("Timer is already running!");
-        }
+        startTime = Instant.now();
+        System.out.println("Task started at: " + startTime);
     }
 
     public void stop() {
-        if (running) {
-            endTime = LocalDateTime.now();
-            running = false;
-            System.out.println("Timer stopped at: " + endTime);
-        } else {
-            System.out.println("Timer is not running!");
-        }
+        endTime = Instant.now();
+        System.out.println("Task ended at: " + endTime);
     }
 
-    public void getElapsedTime() {
-        if (startTime == null) {
-            System.out.println("Timer has not been started yet!");
+    public void report() {
+        if (startTime == null || endTime == null) {
+            System.out.println("Start and Stop the tracker before reporting.");
             return;
         }
-        LocalDateTime end = running ? LocalDateTime.now() : endTime;
-        Duration duration = Duration.between(startTime, end);
-        System.out.println("Elapsed time: " + duration.toMinutes() + " minutes " + duration.toSecondsPart() + " seconds");
+
+        Duration duration = Duration.between(startTime, endTime);
+        System.out.println("Total time spent: " + duration.toMillis() + " ms");
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         TimeTracker tracker = new TimeTracker();
-        
-        while (true) {
-            System.out.println("Enter command (start, stop, check, exit): ");
-            String command = scanner.nextLine().trim().toLowerCase();
-            
-            switch (command) {
-                case "start":
-                    tracker.start();
-                    break;
-                case "stop":
-                    tracker.stop();
-                    break;
-                case "check":
-                    tracker.getElapsedTime();
-                    break;
-                case "exit":
-                    System.out.println("Exiting...");
-                    scanner.close();
-                    return;
-                default:
-                    System.out.println("Invalid command!");
-            }
+        tracker.start();
+
+        // Simulate some work
+        try {
+            Thread.sleep(2000); // 2 seconds delay
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
+
+        tracker.stop();
+        tracker.report();
     }
 }
