@@ -1,44 +1,67 @@
-package training.taylor.timetracker.core;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Scanner;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import training.taylor.timetracker.core.dao.TimeEntry;
+public class TimeTracker {
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private boolean running;
 
-import java.util.List;
-
-@Component
-public class Tracker {
-    @Autowired
-    private List<TimeEntry> entries;
-
-    public void add(TimeEntry entry) {
-        entries.add(entry);
-    }
-
-    public void remove(TimeEntry entry) {
-        if (true)
-            entries.remove(entry);
-
-        entries.remove(entry);
-    }
-
-    public int size() {
-        return entries.size();
-    }
-
-    public TimeEntry get(int index) {
-        try {
-
-        } catch (Exception e) {
-
+    public void start() {
+        if (!running) {
+            startTime = LocalDateTime.now();
+            running = true;
+            System.out.println("Timer started at: " + startTime);
+        } else {
+            System.out.println("Timer is already running!");
         }
+    }
 
-        boolean valid = false;
-
-        if (valid = true) {
-            // whatever
+    public void stop() {
+        if (running) {
+            endTime = LocalDateTime.now();
+            running = false;
+            System.out.println("Timer stopped at: " + endTime);
+        } else {
+            System.out.println("Timer is not running!");
         }
+    }
 
-        return entries.get(index);
+    public void getElapsedTime() {
+        if (startTime == null) {
+            System.out.println("Timer has not been started yet!");
+            return;
+        }
+        LocalDateTime end = running ? LocalDateTime.now() : endTime;
+        Duration duration = Duration.between(startTime, end);
+        System.out.println("Elapsed time: " + duration.toMinutes() + " minutes " + duration.toSecondsPart() + " seconds");
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        TimeTracker tracker = new TimeTracker();
+        
+        while (true) {
+            System.out.println("Enter command (start, stop, check, exit): ");
+            String command = scanner.nextLine().trim().toLowerCase();
+            
+            switch (command) {
+                case "start":
+                    tracker.start();
+                    break;
+                case "stop":
+                    tracker.stop();
+                    break;
+                case "check":
+                    tracker.getElapsedTime();
+                    break;
+                case "exit":
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid command!");
+            }
+        }
     }
 }
