@@ -2,6 +2,6 @@
 Java (Maven) application for tracking time on the job
 
 Time tracker
-how is life.
-helo Atul.
+This is my first maven.
+Helo Atul.
 Good Night!
