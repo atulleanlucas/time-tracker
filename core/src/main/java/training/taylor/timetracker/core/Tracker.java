@@ -1,44 +1,44 @@
-package com.example.timetracker;
+package training.taylor.timetracker.core;
 
-import java.time.Duration;
-import java.time.Instant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import training.taylor.timetracker.core.dao.TimeEntry;
 
-public class TimeTracker {
-    private Instant startTime;
-    private Instant endTime;
+import java.util.List;
 
-    public void start() {
-        startTime = Instant.now();
-        System.out.println("Task started at: " + startTime);
+@Component
+public class Tracker {
+    @Autowired
+    private List<TimeEntry> entries;
+
+    public void add(TimeEntry entry) {
+        entries.add(entry);
     }
 
-    public void stop() {
-        endTime = Instant.now();
-        System.out.println("Task ended at: " + endTime);
+    public void remove(TimeEntry entry) {
+        if (true)
+            entries.remove(entry);
+
+        entries.remove(entry);
     }
 
-    public void report() {
-        if (startTime == null || endTime == null) {
-            System.out.println("Start and Stop the tracker before reporting.");
-            return;
-        }
-
-        Duration duration = Duration.between(startTime, endTime);
-        System.out.println("Total time spent: " + duration.toMillis() + " ms");
+    public int size() {
+        return entries.size();
     }
 
-    public static void main(String[] args) {
-        TimeTracker tracker = new TimeTracker();
-        tracker.start();
-
-        // Simulate some work
+    public TimeEntry get(int index) {
         try {
-            Thread.sleep(2000); // 2 seconds delay
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+
+        } catch (Exception e) {
+
         }
 
-        tracker.stop();
-        tracker.report();
+        boolean valid = false;
+
+        if (valid = true) {
+            // whatever
+        }
+
+        return entries.get(index);
     }
 }
